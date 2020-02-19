@@ -1,19 +1,26 @@
 import 'dart:convert';
-// import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'login.dart';
+import 'sideList.dart';
 
 class MainFetchData extends StatefulWidget {
+  
   @override
   _MainFetchDataState createState() => _MainFetchDataState();
 }
 
 class _MainFetchDataState extends State<MainFetchData> {
-  
   List<Note> list = List();
-  var isLoading = false;
+  var isLoading = true;
+  Note note;
+  
+  updateView(Note note) {
+    setState(() {
+      this.note = note;
+    });
+  }
 
   _fetchData() async {
     setState(() {
@@ -36,32 +43,38 @@ class _MainFetchDataState extends State<MainFetchData> {
     }
   }
 
+@override
+  void initState() {
+
+    super.initState();
+    _fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("Fetch Data JSON"),
+      appBar: AppBar(
+        title: Text("Notes"),
+        leading: Container(),
+      ),
+      body: Container(
+        child: Row(
+          children: <Widget>[
+            SideList(
+              list: list,
+            ),
+            Expanded(
+              child: Container(
+                child: Column(children: <Widget>[
+                  Text(note.headline),
+                  Expanded(child: Text(note.story),),
+                ],),
+              ),
+            ),
+          ],
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: RaisedButton(
-            child: new Text("Fetch Data"),
-            onPressed: _fetchData,
-          ),
-        ),
-        body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.builder(
-                itemCount: list.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(
-                    contentPadding: EdgeInsets.all(10.0),
-                    title: new Text(list[index].headline),
-                    subtitle: new Text(list[index].story),
-                  );
-                }));
+      ),
+    );
   }
 }
 
@@ -76,3 +89,37 @@ class Note {
     );
   }
 }
+
+
+// Scaffold(
+//       appBar: AppBar(
+//         title: Text("Notes"),
+//         leading: Container(),
+//       ),
+//       body: Container(
+//         child: Row(
+//           children: <Widget>[
+//             SideList(
+//               list: list,
+//             ),
+//             Expanded(
+//               child: Container(
+//                 child: isLoading
+//                     ? Center(
+//                         child: CircularProgressIndicator(),
+//                       )
+//                     : ListView.builder(
+//                         itemCount: list.length,
+//                         itemBuilder: (BuildContext context, int index) {
+//                           return ListTile(
+//                             contentPadding: EdgeInsets.all(10.0),
+//                             title: new Text(list[index].headline),
+//                             subtitle: new Text(list[index].story),
+//                           );
+//                         }),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );

@@ -1,3 +1,7 @@
+import 'package:fetch_json/Token.dart';
+import 'package:fetch_json/login.dart';
+import 'mainFetchData.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -22,8 +26,12 @@ class _LoginCard extends State<LoginCard> {
       'Authorization': basicHeader
     });
     if (response.statusCode == 200) {
+      Map tokenMap = jsonDecode(response.body);
+      Token fetchedToken = Token.fromJson(tokenMap);
       setState(() {
+        token = fetchedToken;
         isVisable = true;
+        Navigator.push(context, MaterialPageRoute(builder: (context) => MainFetchData()),);
       });
     } else {
       print(response.statusCode);
@@ -89,7 +97,7 @@ class _LoginCard extends State<LoginCard> {
               child: Container(
                 child: Center(
                   child: Text(
-                    'text Text text',
+                    'Login',
                     textAlign: TextAlign.center,
                   ),
                 ),

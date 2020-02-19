@@ -1,5 +1,8 @@
 import 'package:fetch_json/loginCard.dart';
 import 'package:flutter/material.dart';
+import 'Token.dart';
+
+Token token; 
 
 class Login extends StatefulWidget {
   @override

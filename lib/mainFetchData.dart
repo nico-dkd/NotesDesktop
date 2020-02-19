@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'login.dart';
 
 class MainFetchData extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _MainFetchDataState extends State<MainFetchData> {
     final response =
         await http.get('http://localhost:8080/api/users/notes', headers: {
       'Content-Type': 'application/json',
-      'Authorization': "Bearer mFnIA4pn6LRqIFLzC89glQ=="
+      'Authorization': token.bearer,
     });
     if (response.statusCode == 200) {
       list = (json.decode(response.body) as List)
